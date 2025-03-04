@@ -38,3 +38,15 @@ class IsBorrowingOwnerOrAdmin(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return request.user.is_staff or request.user == obj.user
+
+
+from rest_framework.permissions import BasePermission, SAFE_METHODS
+
+
+class IsAdminForCreate(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == "POST":
+            return (
+                request.user and request.user.is_authenticated and request.user.is_staff
+            )
+        return True
